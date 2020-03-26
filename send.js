@@ -24,7 +24,7 @@ function send(Twitter, LINE) {
                 const groups = csvParser(fs.readFileSync('./groups.csv'));
                 console.log(groups);
                 groups.forEach((id,index) => {
-                    client.pushMessage(id, options)
+                    LINE.pushMessage(id, options)
                         .then(() => {
                         })
                         .catch((err) => {
