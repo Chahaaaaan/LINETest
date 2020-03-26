@@ -22,7 +22,7 @@ const cronTime = "0 * * * * *";
 new CronJob({
     cronTime: cronTime,
     onTick: function () {
-        send.send(Twitter,LINE);
+        send.send(Twitter);
     },
     start: true
 });

@@ -1,5 +1,11 @@
-function send(Twitter, LINE) {
+function send(Twitter) {
     const fs = require('fs');
+    const line = require('@line/bot-sdk');
+    const line_config = {
+        channelAccessToken: process.env.LINE_ACCESS_TOKEN,
+        channelSecret: process.env.LINE_SECRET_KEY
+    };
+    const LINE = new line.Client(line_config);
     const csvParser = require('csv-parse/lib/sync');
     require('./DetectChanges.js')();
     if (fs.existsSync('./last.json')) {
