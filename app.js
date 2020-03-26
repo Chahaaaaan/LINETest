@@ -37,10 +37,10 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
                 const groupId = event.replyToken;
                 console.log("This bot joined :" + groupId);
                 if (!fs.existsSync('./groups.csv')) {
-                    fs.writeFileSync('./groups.csv', groupid);
+                    fs.writeFileSync('./groups.csv', groupId);
                 }
                 else {
-                    fs.appendFileSync('./groups.csv', ',' + groupid);
+                    fs.appendFileSync('./groups.csv', ',' + groupId);
                 }
             }
         });
