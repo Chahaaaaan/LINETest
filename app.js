@@ -44,6 +44,18 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
                     fs.appendFileSync('./groups.csv', ',' + groupId);
                 }
             }
+            else if (event.type === "message") {
+                const options = {
+                    type: 'text',
+                    text: "message"
+                };
+                LINE.pushMessage(event.replyToken, options)
+                    .then(() => {
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
         });
     }
     else {
