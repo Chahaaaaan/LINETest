@@ -26,20 +26,3 @@ new CronJob({
     },
     start: true
 });
-server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
-    res.sendStatus(200);
-    console.log(req.body);
-    req.body.events.forEach((event) => {
-        // 参加イベント発生時にグループIDを記録
-        if (event.type == "join") {
-            const tmp = event.source.groupId;
-            console.log("This bot joined :" + groupId);
-            if (!fs.existsSync('./groups.csv')) {
-                fs.writeFileSync('./groups.csv', groupid);
-            }
-            else {
-                fs.appendFileSync('./groups.csv',  ','+groupid);
-            }
-        }
-    });
-});
