@@ -25,7 +25,7 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
     const body = req.body; // Request body string
     const signature = crypto
         .createHmac('SHA256', channelSecret)
-        .update(body).digest('base64');
+        .update(Buffer.from(JSON.stringify(body))).digest('base64');
     if (req.headers['x-line-signature'] === signature) {
         console.log("Validation Succed");
         res.sendStatus(200);
