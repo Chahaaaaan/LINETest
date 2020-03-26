@@ -1,6 +1,11 @@
 function send(Twitter, LINE) {
     const fs = require('fs');
     const csv = require('csv');
+    const parser = csv.parse((error, data) => {
+        console.log('データ');
+        console.log(data);
+        return data
+    })
     require('./DetectChanges.js')();
     if (fs.existsSync('./last.json')) {
         var now = JSON.parse(fs.readFileSync('./now.json', 'utf8'));
@@ -21,8 +26,8 @@ function send(Twitter, LINE) {
                 text: message
             };
             if (fs.existsSync('./groups.csv')) {
-                const groups = fs.createReadStream('./groups.csv').pipe(csv.parse());
-                groups.forEach((id) => {
+                const groups = fs.createReadStream('./groups.csv').pipe(parser);
+                groups.forEach((id,index) => {
                     client.pushMessage(id, options)
                         .then(() => {
                         })
