@@ -20,15 +20,17 @@ function send(Twitter, LINE) {
                 type: 'text',
                 text: message
             };
-            const groups = fs.readFileSync('./groups.csv').pipe(csv.parse());
-            groups.forEach((id) => {
-                client.pushMessage(id, options)
-                    .then(() => {
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-            })
+            if (fs.existsSync('./groups.csv')) {
+                const groups = fs.readFileSync('./groups.csv').pipe(csv.parse());
+                groups.forEach((id) => {
+                    client.pushMessage(id, options)
+                        .then(() => {
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                });
+            }
         } else {
             console.log("Nothing to send now.");
         }
