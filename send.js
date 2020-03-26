@@ -30,8 +30,8 @@ function send(Twitter) {
                 const groups = csvParser(fs.readFileSync('./groups.csv'));
                 console.log(groups);
                 groups.forEach((id) => {
-                    console.log(id);
-                    LINE.pushMessage(id, options)
+                    console.log(id[0]);
+                    LINE.pushMessage(id[0], options)
                         .then(() => {
                         })
                         .catch((err) => {
