@@ -34,7 +34,8 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
         req.body.events.forEach((event) => {
             // 参加イベント発生時にグループIDを記録
             if (event.type == "join") {
-                const groupId = event.replyToken;
+                const source = event.source;
+                const groupId = source.groupId;
                 console.log("This bot joined :" + groupId);
                 if (!fs.existsSync('./groups.csv')) {
                     fs.writeFileSync('./groups.csv', groupId);
