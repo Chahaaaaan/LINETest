@@ -20,21 +20,33 @@ app.get('/', function (request, response) {
     response.send('Twitter Bot is Running!');
 })
 app.post('/webhook', line.middleware(line_config), (req, res, next) => {
-    res.sendStatus(200);
-    console.log(req.body);
-    req.body.events.forEach((event) => {
-        // 参加イベント発生時にグループIDを記録
-        if (event.type == "join") {
-            const tmp = event.source.groupId;
-            console.log("This bot joined :" + groupId);
-            if (!fs.existsSync('./groups.csv')) {
-                fs.writeFileSync('./groups.csv', groupid);
+    const crypto = require('crypto');
+    const channelSecret = process.env.LINE_SECRET_KEY; // Channel secret string
+    const body = req.body; // Request body string
+    const signature = crypto
+        .createHmac('SHA256', channelSecret)
+        .update(body).digest('base64');
+    if (req.headers['x-line-signature'] === signature) {
+        console.log("Validation Succed");
+        res.sendStatus(200);
+        console.log(req.body);
+        req.body.events.forEach((event) => {
+            // 参加イベント発生時にグループIDを記録
+            if (event.type == "join") {
+                const groupId = event.replyToken;
+                console.log("This bot joined :" + groupId);
+                if (!fs.existsSync('./groups.csv')) {
+                    fs.writeFileSync('./groups.csv', groupid);
+                }
+                else {
+                    fs.appendFileSync('./groups.csv', ',' + groupid);
+                }
             }
-            else {
-                fs.appendFileSync('./groups.csv', ',' + groupid);
-            }
-        }
-    });
+        });
+    }
+    else {
+        console.log("Validation Failed");
+    }
 });
 app.listen(app.get('port'), function () {
     console.log('Node app is Running at localhost:' + app.get('port'))
