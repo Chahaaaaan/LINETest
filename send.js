@@ -21,7 +21,7 @@ function send(Twitter, LINE) {
                 text: message
             };
             if (fs.existsSync('./groups.csv')) {
-                const groups = fs.readFileSync('./groups.csv').pipe(csv.parse());
+                const groups = fs.createReadStream('./groups.csv').pipe(csv.parse());
                 groups.forEach((id) => {
                     client.pushMessage(id, options)
                         .then(() => {
