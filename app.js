@@ -49,7 +49,9 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
                     type: 'text',
                     text: "message"
                 };
-                LINE.pushMessage(event.replyToken, options)
+                const source = event.source;
+                const id = source.groupId;
+                LINE.pushMessage(id, options)
                     .then(() => {
                     })
                     .catch((err) => {
